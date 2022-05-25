@@ -37,7 +37,30 @@ int main(int argc, char** argv)
         std::cout << "a = " << a << std::endl;
     }
 
-    //TODO: example 3, more comprehensive example
+    std::cout << std::endl;
+    std::cout << "** Example 3 - Complex types and nesting" << std::endl;
+    {
+        std::map<std::string, std::vector<int>> a;
+
+        json::Template tpl;
+        tpl.bind("a", a);
+
+        int c;
+        std::string d;
+        json::Template obj_tpl;
+        obj_tpl.bind("c", c);
+        obj_tpl.bind("d", d);
+        tpl.bind("obj", obj_tpl);
+
+        std::string str = "{\"a\": {\"1\":[0,1],\"2\":[3,4]}, \"obj\": {\"c\": 78, \"d\": \"some string\"}}";
+        std::istringstream iss(str);
+
+        // Extract values to bound variables
+        json::extract(tpl, iss);
+
+        std::cout << "obj.d = " << d << std::endl;
+        std::cout << "a[\"1\"].size() = " << a["1"].size() << std::endl;
+    }
 
     std::cout << std::endl;
     std::cout << "** Example 4 - binary data" << std::endl;
